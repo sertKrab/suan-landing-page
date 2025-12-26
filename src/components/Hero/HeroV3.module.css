@@ -1,0 +1,196 @@
+.hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--green-5) 0%, var(--green-3) 100%);
+    overflow: hidden;
+}
+
+.gradientOverlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 20%,
+            rgba(165, 214, 167, 0.15) 0%,
+            transparent 50%);
+    pointer-events: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+    position: relative;
+    z-index: 2;
+}
+
+.splitLayout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+    align-items: center;
+    min-height: 80vh;
+}
+
+@media (max-width: 900px) {
+    .splitLayout {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: var(--space-xl);
+    }
+
+    .mockupSide {
+        order: 1;
+    }
+
+    .content {
+        order: 0;
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+@media (max-width: 900px) {
+    .content {
+        align-items: center;
+    }
+}
+
+.logoWrapper {
+    width: 120px;
+    height: 120px;
+    perspective: 1000px;
+    margin-top: var(--space-xl);
+}
+
+.logo {
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s ease;
+}
+
+.logoWrapper:hover .logo {
+    transform: rotateY(15deg) scale(1.1);
+}
+
+.title {
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: 900;
+    color: white;
+    margin: 0;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.title:hover {
+    transform: scale(1.02);
+    text-shadow:
+        0 0 30px var(--tint-3),
+        0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.tagline {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 500;
+    line-height: 1.5;
+    min-height: 2.5em;
+}
+
+.taglineStrong {
+    display: inline-block;
+    color: var(--tint-3);
+    font-size: 1.3em;
+    font-weight: 800;
+    text-shadow: 0 0 30px var(--tint-3);
+    margin-left: 4px;
+}
+
+.subtitle {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.7;
+    margin: var(--space-sm) 0;
+}
+
+.ctaGroup {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-xl);
+    flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+    .ctaGroup {
+        justify-content: center;
+    }
+}
+
+.ctaPrimary {
+    padding: var(--space-md) var(--space-xl);
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--green-5);
+    background: linear-gradient(135deg, var(--tint-3) 0%, var(--tint-2) 100%);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow:
+        0 4px 15px rgba(165, 214, 167, 0.4),
+        0 0 0 0 rgba(165, 214, 167, 0.4);
+    transition: all 0.3s ease;
+}
+
+.ctaPrimary:hover {
+    box-shadow:
+        0 6px 25px rgba(165, 214, 167, 0.5),
+        0 0 0 4px rgba(165, 214, 167, 0.2);
+}
+
+.ctaSecondary {
+    padding: var(--space-md) var(--space-xl);
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: white;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.ctaSecondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.mockupSide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.scrollIndicator {
+    position: absolute;
+    bottom: var(--space-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: var(--font-size-sm);
+    z-index: 10;
+}
+
+.scrollIndicator span:first-child {
+    font-size: 24px;
+}
