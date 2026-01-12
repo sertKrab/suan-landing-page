@@ -1,5 +1,7 @@
 import styles from './page.module.css'
 import HeroV3 from '@/components/Hero'
+import { Screenshots } from '@/components/Screenshots'
+
 
 export default function Home() {
   return (
@@ -82,44 +84,110 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features Section - NEW VERSION */}
       <section className="section">
         <div className="container">
           <h2 className="text-center" style={{ marginBottom: 'var(--space-xl)' }}>
-            ฟีเจอร์หลัก
+            ระบบช่วยเกษตรกรได้อย่างไร
           </h2>
           <div className={styles.featuresGrid}>
+            {/* Feature 1: Work Log */}
             <div className={styles.featureCard}>
-              <div className={styles.featureIcon}>🌿</div>
-              <h3>ดูสวนได้ทันที</h3>
+              <div className={styles.featureIcon}>📝</div>
+              <h3>จดบันทึกงานสวนให้</h3>
               <p className={styles.featureSubtitle}>
-                ไม่ต้องเดินเช็กเองทุกครั้ง
+                รดน้ำ ใส่ปุ๋ย ฉีดยา เก็บเกี่ยว
               </p>
-              <p>เปิดดูในมือถือ ก็รู้ว่าดินแห้งไหม ร้อนหรือเปล่า</p>
+              <ul className={styles.featureList}>
+                <li>💧 รดน้ำ - บันทึกครั้งละกี่ลิตร ใช้เวลานานแค่ไหน</li>
+                <li>🌱 ใส่ปุ๋ย - จำได้ว่าใส่สูตรไหน กี่กิโล</li>
+                <li>🧪 ฉีดยา - ติดตามว่าฉีดไปเมื่อไหร่ ปลอดภัยหรือยัง</li>
+                <li>🌾 เก็บเกี่ยว - รู้ปริมาณผลผลิตจริง</li>
+              </ul>
             </div>
 
+            {/* Feature 2: Garden Management */}
             <div className={styles.featureCard}>
-              <div className={styles.featureIcon}>💧</div>
-              <h3>วัดให้ ดูให้ง่าย</h3>
+              <div className={styles.featureIcon}>🏡</div>
+              <h3>ดูสรุปสวนทุกแปลง</h3>
               <p className={styles.featureSubtitle}>
-                เครื่องวัดต่าง ๆ แปลงเป็นตัวเลขเข้าใจง่าย
+                ภาพรวมสวนในหนึ่งหน้าจอ
               </p>
-              <p>ไม่ต้องรู้เรื่องเทคนิค ก็ใช้ได้</p>
+              <ul className={styles.featureList}>
+                <li>🌿 ดูสถานะแปลง (กำลังปลูก/ว่าง)</li>
+                <li>📍 แยกตามพืชที่ปลูก</li>
+                <li>📊 ดูอายุพืช และวันเก็บเกี่ยว</li>
+                <li>🌤️ อุณหภูมิ-ความชื้น (ถ้ามี sensor)</li>
+              </ul>
             </div>
 
+            {/* Feature 3: Finance */}
             <div className={styles.featureCard}>
-              <div className={styles.featureIcon}>🤖</div>
-              <h3>ระบบช่วยคิดให้</h3>
+              <div className={styles.featureIcon}>💰</div>
+              <h3>รู้ต้นทุนจริง</h3>
               <p className={styles.featureSubtitle}>
-                ระบบช่วยดูแนวโน้ม
+                ไม่ต้องเดา ดูได้ชัดเจน
               </p>
-              <p>บอกได้ว่าสวนควรดูแลยังไงต่อ</p>
+              <ul className={styles.featureList}>
+                <li>💸 รายจ่าย (ปุ๋ย, ยา, ค่าแรง)</li>
+                <li>💵 รายรับ (ขาย, กำไร)</li>
+                <li>📈 รายงานทางการเงิน</li>
+                <li>🧾 Export CSV ได้</li>
+              </ul>
+            </div>
+
+            {/* Feature 4: Inventory */}
+            <div className={styles.featureCard}>
+              <div className={styles.featureIcon}>📦</div>
+              <h3>ติดตามสต็อกปุ๋ย/ยา</h3>
+              <p className={styles.featureSubtitle}>
+                รู้ว่าเหลือเท่าไหร่ ซื้อเมื่อไหร่
+              </p>
+              <ul className={styles.featureList}>
+                <li>📋 คลังข้อมูลปุ๋ย/ยา</li>
+                <li>📊 สต็อกคงเหลือ (FIFO)</li>
+                <li>💳 ประวัติการซื้อ</li>
+                <li>⚠️ แจ้งเตือนของใกล้หมด</li>
+              </ul>
+            </div>
+
+            {/* Feature 5: Timeline */}
+            <div className={styles.featureCard}>
+              <div className={styles.featureIcon}>📅</div>
+              <h3>แจ้งเตือนงานที่ต้องทำ</h3>
+              <p className={styles.featureSubtitle}>
+                ไม่ต้องจำเอง ระบบบอกให้
+              </p>
+              <ul className={styles.featureList}>
+                <li>📌 งานวันนี้ต้องทำอะไร</li>
+                <li>🔔 แจ้งเตือนถึงเวลา</li>
+                <li>📝 Template แผนงาน (เช่น มะนาว 90 วัน)</li>
+                <li>✅ เช็คลิสต์ ทำแล้วหรือยัง</li>
+              </ul>
+            </div>
+
+            {/* Feature 6: Team */}
+            <div className={styles.featureCard}>
+              <div className={styles.featureIcon}>👥</div>
+              <h3>ทำงานร่วมกันทั้งทีม</h3>
+              <p className={styles.featureSubtitle}>
+                สวนใหญ่มีหลายคน ร่วมงานได้
+              </p>
+              <ul className={styles.featureList}>
+                <li>👤 เชิญสมาชิก (Invite Code)</li>
+                <li>👔 กำหนดบทบาท (Owner, Manager, Worker)</li>
+                <li>🔐 แยกสิทธิ์เข้าถึงแปลง</li>
+                <li>📊 ดูสรุปงานของทีม</li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
+      {/* Screenshots Section */}
+      <Screenshots />
+
+      {/* How It Works - NEW VERSION */}
       <section className={`section ${styles.howItWorksSection}`}>
         <div className="container text-center">
           <h2>ใช้งานยังไง (ง่ายมาก)</h2>
@@ -127,29 +195,36 @@ export default function Home() {
           <div className={styles.stepsGrid}>
             <div className={styles.step}>
               <div className={styles.stepNumber}>1</div>
-              <div className={styles.stepIcon}>📝</div>
+              <div className={styles.stepIcon}>📱</div>
               <h3>สมัครใช้งาน</h3>
-              <p>ใส่เบอร์โทร เสร็จ!</p>
+              <p>ใส่เบอร์โทร + OTP เสร็จ! ไม่ต้องกรอกเยอะ</p>
             </div>
 
             <div className={styles.step}>
               <div className={styles.stepNumber}>2</div>
-              <div className={styles.stepIcon}>🌳</div>
-              <h3>เพิ่มแปลงสวน</h3>
-              <p>บอกว่าปลูกอะไร ที่ไหน</p>
+              <div className={styles.stepIcon}>🏡</div>
+              <h3>สร้างแปลงสวนแรก</h3>
+              <p>บอกว่าปลูกอะไร กี่ไร่ เท่านั้น</p>
             </div>
 
             <div className={styles.step}>
               <div className={styles.stepNumber}>3</div>
-              <div className={styles.stepIcon}>📱</div>
-              <h3>เปิดดูข้อมูล</h3>
-              <p>ระบบช่วยจำแทนคุณ</p>
+              <div className={styles.stepIcon}>📝</div>
+              <h3>บันทึกงานแรก</h3>
+              <p>รดน้ำ ใส่ปุ๋ย หรืออะไรก็ได้ กดบันทึก 3 วินาที</p>
+            </div>
+
+            <div className={styles.step}>
+              <div className={styles.stepNumber}>4</div>
+              <div className={styles.stepIcon}>📊</div>
+              <h3>ดูสรุปและต้นทุน</h3>
+              <p>ระบบคำนวณต้นทุนให้อัตโนมัติ ดูได้ทันที</p>
             </div>
           </div>
 
           <p className={styles.howItWorksSummary}>
-            ไม่ต้องตั้งค่าอะไรยุ่งยาก<br />
-            <strong>ใช้ได้เลย</strong>
+            จากเคยต้องจำทุกอย่างเอง<br />
+            <strong>ตอนนี้ระบบจำให้หมดแล้ว</strong>
           </p>
         </div>
       </section>

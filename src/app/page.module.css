@@ -301,6 +301,26 @@
   margin-bottom: var(--space-sm);
 }
 
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--space-md);
+  text-align: left;
+}
+
+.featureList li {
+  padding: var(--space-sm) 0;
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  line-height: 1.5;
+}
+
+.featureList li:last-child {
+  border-bottom: none;
+}
+
+
 /* How It Works */
 .howItWorksSection {
   background: var(--color-bg-alt);

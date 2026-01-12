@@ -23,19 +23,19 @@ body {
    Design Tokens (CSS Variables) - Full Design System
    ============================================ */
 :root {
-  /* ===== Green Shades (เข้มขึ้น) ===== */
-  --green-1: #43A54D;
-  --green-2: #3B8E3B;
-  --green-3: #2F7031;
-  --green-4: #1E5E1F;
-  --green-5: #103E13;
+  /* ===== Brand Main Shades (เข้มขึ้น) ===== */
+  --brand-main-1: #43A54D;
+  --brand-main-2: #3B8E3B;
+  --brand-main-3: #2F7031;
+  --brand-main-4: #1E5E1F;
+  --brand-main-5: #103E13;
 
-  /* ===== Green Tints (อ่อนลง) ===== */
-  --tint-1: #58BB69;
-  --tint-2: #81C784;
-  --tint-3: #A5D6A7;
-  --tint-4: #C8E6C9;
-  --tint-5: #E8F5E9;
+  /* ===== Brand Light Tints (อ่อนลง) ===== */
+  --brand-light-1: #58BB69;
+  --brand-light-2: #81C784;
+  --brand-light-3: #A5D6A7;
+  --brand-light-4: #C8E6C9;
+  --brand-light-5: #E8F5E9;
 
   /* ===== Neutrals ===== */
   --neutral-black: #263238;
@@ -53,15 +53,15 @@ body {
   --info: #2194F3;
 
   /* ===== Semantic Colors (mapped from above) ===== */
-  --color-primary: var(--green-3);
-  --color-primary-light: var(--green-1);
-  --color-primary-dark: var(--green-5);
+  --color-primary: var(--brand-main-3);
+  --color-primary-light: var(--brand-main-1);
+  --color-primary-dark: var(--brand-main-5);
 
-  --color-accent: var(--tint-3);
+  --color-accent: var(--brand-light-3);
   --color-accent-warm: var(--warning);
 
   --color-bg: var(--neutral-white);
-  --color-bg-alt: var(--tint-5);
+  --color-bg-alt: var(--brand-light-5);
 
   --color-text: var(--neutral-black);
   --color-text-muted: var(--neutral-grey);
