@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สวนไม่ลืม — ระบบจัดการสวนผลไม้</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-main:   #3A8F3F;
+    --green-light:  #4CAF50;
+    --green-bright: #5CB85C;
+    --green-pale:   #E8F5E9;
+    --green-deep:   #2E7D32;
+    --gold:         #C5A065;
+    --gold-light:   #E8C98A;
+    --bg:           #F4F6F4;
+    --bg-card:      #FFFFFF;
+    --text:         #1C2B1C;
+    --text-muted:   #6B8F6B;
+    --border:       #E0EBE0;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'Kanit',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; }
+
+  /* NAV */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:14px 5vw;
+    display:flex; align-items:center; justify-content:space-between;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+    transition:padding .3s;
+  }
+  .nav-logo { display:flex; align-items:center; gap:10px; font-size:1.15rem; font-weight:700; color:var(--green-main); }
+  .nav-logo-icon {
+    width:36px; height:36px;
+    background:linear-gradient(135deg,#3A8F3F,#5CB85C);
+    border-radius:10px; display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem; box-shadow:0 4px 12px rgba(58,143,63,.3);
+  }
+  .nav-cta {
+    background:var(--green-main); color:#fff; border:none; border-radius:50px;
+    padding:10px 26px; font-family:'Kanit',sans-serif; font-size:.9rem; font-weight:600;
+    cursor:pointer; text-decoration:none; transition:all .3s;
+    box-shadow:0 3px 14px rgba(58,143,63,.35);
+  }
+  .nav-cta:hover { background:var(--green-bright); transform:translateY(-1px); }
+
+  /* HERO */
+  #hero {
+    position:relative; min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden; padding-top:70px;
+  }
+  .hero-bg {
+    position:absolute; inset:0;
+    background:
+      linear-gradient(170deg,rgba(46,125,50,.82) 0%,rgba(30,90,35,.72) 55%,rgba(197,160,101,.18) 100%),
+      url('https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?w=1600&q=80') center/cover no-repeat;
+    animation:heroZoom 22s ease-in-out infinite alternate;
+  }
+  @keyframes heroZoom { from{transform:scale(1)} to{transform:scale(1.05)} }
+
+  .leaf { position:absolute; opacity:.18; pointer-events:none; animation:floatLeaf linear infinite; }
+  @keyframes floatLeaf {
+    0%   { transform:translateY(110vh) rotate(0deg); opacity:0; }
+    10%  { opacity:.18; }
+    90%  { opacity:.18; }
+    100% { transform:translateY(-10vh) rotate(360deg); opacity:0; }
+  }
+
+  .hero-content { position:relative; z-index:2; text-align:center; padding:0 20px; max-width:760px; }
+  .hero-glass {
+    background:rgba(255,255,255,.1); backdrop-filter:blur(28px);
+    border:1px solid rgba(255,255,255,.22); border-radius:28px;
+    padding:52px 60px;
+    box-shadow:0 32px 80px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.25);
+    animation:fadeUp .9s ease both;
+  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(38px)} to{opacity:1;transform:translateY(0)} }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.35);
+    border-radius:50px; padding:6px 18px; font-size:.78rem; color:rgba(255,255,255,.9);
+    letter-spacing:.07em; margin-bottom:24px; animation:fadeUp .9s .15s ease both;
+  }
+  .hero-title {
+    font-size:clamp(2rem,5vw,3.2rem); font-weight:700; color:#fff;
+    line-height:1.25; margin-bottom:14px; animation:fadeUp .9s .25s ease both;
+  }
+  .hero-title span { color:var(--gold-light); }
+  .hero-subtitle {
+    font-size:clamp(.95rem,2vw,1.18rem); font-weight:300; color:rgba(255,255,255,.82);
+    margin-bottom:36px; line-height:1.8; animation:fadeUp .9s .35s ease both;
+  }
+  .hero-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; animation:fadeUp .9s .45s ease both; }
+  .btn-green {
+    background:var(--green-main); color:#fff; border:none; border-radius:50px;
+    padding:16px 38px; font-family:'Kanit',sans-serif; font-size:1.05rem; font-weight:600;
+    cursor:pointer; text-decoration:none; display:inline-block;
+    box-shadow:0 6px 30px rgba(58,143,63,.5); transition:all .3s;
+    animation:pulseCta 3s ease 2s infinite;
+  }
+  @keyframes pulseCta {
+    0%,100%{box-shadow:0 6px 30px rgba(58,143,63,.5),0 0 0 0 rgba(58,143,63,.3)}
+    50%{box-shadow:0 6px 30px rgba(58,143,63,.5),0 0 0 14px rgba(58,143,63,0)}
+  }
+  .btn-green:hover { background:var(--green-bright); transform:translateY(-3px); }
+  .btn-outline {
+    background:transparent; color:rgba(255,255,255,.85);
+    border:1.5px solid rgba(255,255,255,.4); border-radius:50px;
+    padding:15px 32px; font-family:'Kanit',sans-serif; font-size:1rem; font-weight:400;
+    cursor:pointer; text-decoration:none; transition:all .3s;
+  }
+  .btn-outline:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.7); }
+  .hero-pills { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-top:26px; animation:fadeUp .9s .55s ease both; }
+  .app-pill {
+    background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.25);
+    border-radius:50px; padding:6px 16px; font-size:.78rem; color:rgba(255,255,255,.8);
+    display:flex; align-items:center; gap:6px;
+  }
+  .hero-scroll {
+    position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:rgba(255,255,255,.45); font-size:.72rem; animation:fadeUp .9s 1s ease both;
+  }
+  .scroll-bar {
+    width:1px; height:44px;
+    background:linear-gradient(to bottom,rgba(255,255,255,.5),transparent);
+    animation:scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%{opacity:0;transform:scaleY(0);transform-origin:top}
+    50%{opacity:1;transform:scaleY(1)}
+    100%{opacity:0;transform:scaleY(0);transform-origin:bottom}
+  }
+
+  /* SHARED */
+  section { padding:96px 5vw; }
+  .section-label { font-size:.78rem; font-weight:500; letter-spacing:.15em; text-transform:uppercase; color:var(--green-main); margin-bottom:10px; }
+  .section-title { font-size:clamp(1.7rem,3.5vw,2.5rem); font-weight:700; color:var(--text); line-height:1.3; margin-bottom:14px; }
+  .section-sub { font-size:1rem; font-weight:300; color:var(--text-muted); line-height:1.85; max-width:520px; }
+  .reveal { opacity:0; transform:translateY(28px); transition:opacity .65s ease,transform .65s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* PAIN */
+  #pain { background:var(--bg-card); }
+  .pain-head { text-align:center; margin-bottom:56px; }
+  .pain-head .section-sub { margin:0 auto; }
+  .pain-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:24px; max-width:960px; margin:0 auto; }
+  .pain-card {
+    background:var(--bg); border:1.5px solid var(--border);
+    border-radius:20px; padding:36px 28px; position:relative; overflow:hidden; transition:all .4s;
+  }
+  .pain-card::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--green-main),var(--gold)); opacity:0; transition:opacity .3s; }
+  .pain-card:hover { transform:translateY(-6px); box-shadow:0 20px 50px rgba(58,143,63,.1); }
+  .pain-card:hover::after { opacity:1; }
+  .pain-icon { font-size:2.4rem; margin-bottom:18px; display:block; }
+  .pain-card h3 { font-size:1.1rem; font-weight:600; color:var(--text); margin-bottom:8px; }
+  .pain-card p  { font-size:.9rem; font-weight:300; color:var(--text-muted); line-height:1.75; }
+
+  /* FEATURES */
+  #features { background:var(--green-pale); }
+  .feat-head { text-align:center; margin-bottom:56px; }
+  .feat-head .section-sub { margin:0 auto; }
+  .feat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:22px; max-width:1080px; margin:0 auto; }
+  .feat-card {
+    background:var(--bg-card); border-radius:20px; padding:34px 26px;
+    border:1px solid rgba(58,143,63,.1); box-shadow:0 3px 20px rgba(58,143,63,.07); transition:all .4s;
+  }
+  .feat-card:hover { transform:translateY(-7px); box-shadow:0 18px 50px rgba(58,143,63,.14); }
+  .feat-icon { width:54px; height:54px; border-radius:14px; margin-bottom:20px; display:flex; align-items:center; justify-content:center; font-size:1.6rem; }
+  .feat-icon.blue{background:#E3F2FD} .feat-icon.green{background:#E8F5E9} .feat-icon.orange{background:#FFF3E0} .feat-icon.purple{background:#F3E5F5}
+  .feat-card h3 { font-size:1.08rem; font-weight:600; color:var(--text); margin-bottom:8px; }
+  .feat-card p  { font-size:.88rem; font-weight:300; color:var(--text-muted); line-height:1.8; }
+  .feat-tag { display:inline-block; margin-top:14px; background:var(--green-pale); color:var(--green-deep); font-size:.7rem; font-weight:600; letter-spacing:.05em; padding:4px 12px; border-radius:50px; border:1px solid rgba(58,143,63,.2); }
+
+  /* APP PREVIEW */
+  #preview { background:var(--bg-card); }
+  .preview-inner { max-width:960px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+  .preview-text .section-sub { max-width:440px; }
+  .preview-feature-list { margin-top:28px; display:flex; flex-direction:column; gap:14px; }
+  .pf-item { display:flex; align-items:center; gap:14px; background:var(--bg); border-radius:14px; padding:14px 18px; border:1px solid var(--border); transition:all .3s; }
+  .pf-item:hover { transform:translateX(4px); border-color:rgba(58,143,63,.3); }
+  .pf-ico { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
+  .pf-text strong { font-size:.92rem; font-weight:600; color:var(--text); display:block; }
+  .pf-text span   { font-size:.8rem; color:var(--text-muted); font-weight:300; }
+  .preview-phone  { display:flex; justify-content:center; }
+  .phone-mock {
+    width:235px; background:var(--bg-card); border-radius:28px; padding:16px;
+    box-shadow:0 24px 60px rgba(58,143,63,.18),0 2px 8px rgba(0,0,0,.06);
+    border:1.5px solid var(--border);
+  }
+  .phone-topbar { display:flex; justify-content:space-between; align-items:center; padding:4px 6px 12px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .phone-logo  { font-size:.75rem; font-weight:700; color:var(--green-main); }
+  .phone-dot   { width:26px; height:26px; border-radius:50%; background:var(--green-main); display:flex; align-items:center; justify-content:center; font-size:.75rem; color:#fff; font-weight:700; }
+  .phone-question { font-size:.75rem; font-weight:600; color:var(--text); margin-bottom:10px; }
+  .phone-grid  { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .phone-action { background:var(--bg); border-radius:14px; padding:14px 8px; text-align:center; border:1px solid var(--border); transition:all .3s; }
+  .phone-action:hover { background:var(--green-pale); border-color:rgba(58,143,63,.3); }
+  .pa-icon-wrap { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin:0 auto 6px; }
+  .pa-label { font-size:.72rem; font-weight:500; color:var(--text); }
+  .phone-nav { display:flex; justify-content:space-around; margin-top:12px; padding-top:10px; border-top:1px solid var(--border); }
+  .pn-item { font-size:.62rem; color:var(--text-muted); text-align:center; line-height:1.4; }
+  .pn-item.active { color:var(--green-main); font-weight:600; }
+
+  /* PROOF */
+  #proof { background:linear-gradient(135deg,var(--green-main) 0%,#1a5c1e 100%); position:relative; overflow:hidden; }
+  #proof::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 70% 50%,rgba(197,160,101,.12) 0%,transparent 65%); pointer-events:none; }
+  .proof-wrap { max-width:980px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+  .quote-big { font-size:5.5rem; line-height:.4; color:var(--gold); opacity:.35; font-family:Georgia,serif; margin-bottom:20px; display:block; }
+  blockquote { font-size:clamp(1.05rem,2vw,1.35rem); font-weight:400; color:rgba(255,255,255,.9); line-height:1.85; margin-bottom:28px; font-style:italic; }
+  .author { display:flex; align-items:center; gap:14px; }
+  .author-ava { width:50px; height:50px; background:linear-gradient(135deg,#4CAF50,#81C784); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.3rem; border:2px solid rgba(197,160,101,.5); flex-shrink:0; }
+  .author-name   { color:var(--gold); font-size:.95rem; font-weight:600; display:block; }
+  .author-detail { color:rgba(255,255,255,.55); font-size:.82rem; font-weight:300; }
+  .trust-list { display:flex; flex-direction:column; gap:18px; }
+  .trust-item { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); border-radius:16px; padding:22px; display:flex; gap:16px; align-items:flex-start; transition:all .3s; }
+  .trust-item:hover { background:rgba(255,255,255,.12); transform:translateX(4px); }
+  .trust-ico { width:46px; height:46px; background:rgba(197,160,101,.18); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; }
+  .trust-title { color:var(--gold); font-size:.92rem; font-weight:600; display:block; margin-bottom:4px; }
+  .trust-desc  { color:rgba(255,255,255,.55); font-size:.8rem; font-weight:300; }
+
+  /* HOW */
+  #how { background:var(--green-pale); }
+  .how-head { text-align:center; margin-bottom:64px; }
+  .how-head .section-sub { margin:0 auto; }
+  .steps-wrap { max-width:860px; margin:0 auto; position:relative; }
+  .steps-connector { position:absolute; top:36px; left:calc(16.67% + 36px); right:calc(16.67% + 36px); height:2px; background:repeating-linear-gradient(90deg,var(--green-main) 0,var(--green-main) 8px,transparent 8px,transparent 16px); opacity:.3; }
+  .steps-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:32px; position:relative; z-index:1; }
+  .step { text-align:center; }
+  .step-circle { width:72px; height:72px; margin:0 auto 18px; background:linear-gradient(135deg,var(--green-main),var(--green-bright)); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.7rem; box-shadow:0 8px 28px rgba(58,143,63,.3); position:relative; }
+  .step-circle::after { content:''; position:absolute; inset:-5px; border-radius:50%; border:2px dashed rgba(58,143,63,.25); animation:spin 14s linear infinite; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .step-badge { display:inline-block; background:var(--bg-card); color:var(--green-main); font-size:.7rem; font-weight:700; letter-spacing:.1em; padding:4px 14px; border-radius:50px; border:1px solid rgba(58,143,63,.25); margin-bottom:10px; }
+  .step h3 { font-size:1.05rem; font-weight:600; color:var(--text); margin-bottom:8px; }
+  .step p  { font-size:.87rem; font-weight:300; color:var(--text-muted); line-height:1.75; }
+
+  /* CTA */
+  #cta { background:linear-gradient(140deg,var(--green-main) 0%,#1a5c1e 100%); text-align:center; position:relative; overflow:hidden; }
+  #cta::before { content:''; position:absolute; top:-200px; left:50%; transform:translateX(-50%); width:700px; height:700px; background:radial-gradient(circle,rgba(197,160,101,.12) 0%,transparent 70%); pointer-events:none; }
+  .cta-inner { position:relative; z-index:1; max-width:600px; margin:0 auto; }
+  .cta-icon  { font-size:3.2rem; display:block; margin-bottom:18px; }
+  .cta-title { font-size:clamp(1.8rem,4vw,2.8rem); font-weight:700; color:#fff; line-height:1.3; margin-bottom:14px; }
+  .cta-title span { color:var(--gold-light); }
+  .cta-sub   { font-size:1rem; font-weight:300; color:rgba(255,255,255,.65); margin-bottom:38px; line-height:1.8; }
+  .btn-cta-big {
+    background:linear-gradient(135deg,var(--gold),#D4A843); color:var(--green-deep);
+    border:none; border-radius:50px; padding:20px 52px;
+    font-family:'Kanit',sans-serif; font-size:1.15rem; font-weight:700;
+    cursor:pointer; transition:all .3s; display:inline-block; text-decoration:none;
+    box-shadow:0 8px 36px rgba(197,160,101,.45); margin-bottom:18px;
+  }
+  .btn-cta-big:hover { transform:translateY(-4px); box-shadow:0 16px 56px rgba(197,160,101,.55); }
+  .cta-note { font-size:.8rem; color:rgba(255,255,255,.4); }
+  .cta-note span { background:rgba(255,255,255,.07); padding:4px 14px; border-radius:50px; border:1px solid rgba(255,255,255,.12); }
+
+  footer { background:#0f2a11; padding:22px 5vw; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+  .f-logo { color:var(--green-bright); font-weight:700; font-size:.92rem; display:flex; align-items:center; gap:8px; }
+  .f-copy { color:rgba(255,255,255,.3); font-size:.78rem; font-weight:300; }
+
+  @media (max-width:768px) {
+    .hero-glass { padding:32px 22px; }
+    .proof-wrap { grid-template-columns:1fr; gap:36px; }
+    .steps-grid { grid-template-columns:1fr; gap:36px; }
+    .steps-connector { display:none; }
+    .preview-inner { grid-template-columns:1fr; }
+    .preview-phone { display:none; }
+  }
+  @media (max-width:480px) { section { padding:72px 5vw; } nav { padding:10px 4vw; } }
+</style>
+</head>
+<body>
+
+<div class="leaf" style="left:8%;font-size:24px;animation-duration:14s;animation-delay:0s">🍃</div>
+<div class="leaf" style="left:22%;font-size:18px;animation-duration:18s;animation-delay:4s">🌿</div>
+<div class="leaf" style="left:68%;font-size:20px;animation-duration:16s;animation-delay:8s">🍃</div>
+<div class="leaf" style="left:88%;font-size:16px;animation-duration:20s;animation-delay:2s">🌿</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <div class="nav-logo-icon">🌿</div>
+    สวนไม่ลืม
+  </div>
+  <a href="#cta" class="nav-cta">ใช้งานฟรี →</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-glass">
+      <div class="hero-badge">🌾 ระบบจัดการสวนผลไม้ไทย · PWA</div>
+      <h1 class="hero-title">คนอาจลืม…<br><span>แต่สวนไม่ลืม</span></h1>
+      <p class="hero-subtitle">จดงานสวนง่ายๆ ไม่ต้องจำ<br>ปล่อยให้ระบบดูแลคุณ</p>
+      <div class="hero-btns">
+        <a href="#cta" class="btn-green">🌱 เริ่มต้นใช้งานฟรี</a>
+        <a href="#features" class="btn-outline">ดูฟีเจอร์</a>
+      </div>
+      <div class="hero-pills">
+        <div class="app-pill">💧 รดน้ำ &nbsp;·&nbsp; 🌿 ใส่ปุ๋ย &nbsp;·&nbsp; 🧪 ฉีดพ่นสาร</div>
+        <div class="app-pill">📱 ไม่ต้องติดตั้ง · ใช้ได้ทันที</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-bar"></div></div>
+</section>
+
+<!-- PAIN -->
+<section id="pain">
+  <div class="pain-head reveal">
+    <div class="section-label">ปัญหาที่เจอทุกวัน</div>
+    <h2 class="section-title">คุ้นๆ ไหมกับสิ่งเหล่านี้?</h2>
+    <p class="section-sub">เกษตรกรทุกคนผ่านปัญหาเหล่านี้มาแล้ว เราสร้างสวนไม่ลืมเพื่อแก้ตรงนี้</p>
+  </div>
+  <div class="pain-grid">
+    <div class="pain-card reveal" style="transition-delay:.1s">
+      <span class="pain-icon">🌧️</span>
+      <h3>ลืมว่าใส่ปุ๋ยวันไหน</h3>
+      <p>จำไม่ได้ว่าใส่ปุ๋ยไปแล้วหรือยัง ต้องนับวันเอง กลัวใส่ซ้ำหรือข้ามรอบไป</p>
+    </div>
+    <div class="pain-card reveal" style="transition-delay:.2s">
+      <span class="pain-icon">📦</span>
+      <h3>สรุปยอดผลผลิตไม่ได้</h3>
+      <p>จดกระดาษไว้แต่หาย ไม่รู้ว่าปีนี้ได้กำไรเท่าไหร่ ขาดทุนตรงไหน</p>
+    </div>
+    <div class="pain-card reveal" style="transition-delay:.3s">
+      <span class="pain-icon">🤔</span>
+      <h3>ลูกค้าถามที่มา ตอบไม่ได้</h3>
+      <p>ผู้ซื้อรายใหญ่ถามว่าใช้สารอะไร เก็บเกี่ยวเมื่อไหร่ แต่ตอบไม่ได้เพราะไม่มีข้อมูล</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="feat-head reveal">
+    <div class="section-label">ฟีเจอร์หลัก</div>
+    <h2 class="section-title">ครบ ในที่เดียว</h2>
+    <p class="section-sub">ออกแบบมาสำหรับเกษตรกรไทย ใช้งานได้ทันทีจากมือถือ ไม่ต้องติดตั้ง</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card reveal" style="transition-delay:.1s">
+      <div class="feat-icon blue">📋</div>
+      <h3>Timeline ดูแลรายต้น</h3>
+      <p>บันทึกทุกขั้นตอนตั้งแต่ปลูกจนเก็บเกี่ยว ดูย้อนหลังได้ไม่จำกัด</p>
+      <span class="feat-tag">ติดตามรายต้น</span>
+    </div>
+    <div class="feat-card reveal" style="transition-delay:.2s">
+      <div class="feat-icon green">📱</div>
+      <h3>QR Code ติดต้น</h3>
+      <p>สแกนปุ๊บ รู้ประวัติต้นไม้ปั๊บ เพิ่มความไว้วางใจให้ลูกค้าและผู้ซื้อ</p>
+      <span class="feat-tag">Traceability ระดับสากล</span>
+    </div>
+    <div class="feat-card reveal" style="transition-delay:.3s">
+      <div class="feat-icon orange">💰</div>
+      <h3>สรุปรายรับ-รายจ่าย</h3>
+      <p>รู้กำไรชัดเจน ไม่ต้องเดา ดูกราฟรายเดือน รายปีได้ทันที</p>
+      <span class="feat-tag">บัญชีสวน</span>
+    </div>
+    <div class="feat-card reveal" style="transition-delay:.4s">
+      <div class="feat-icon purple">👥</div>
+      <h3>ทีมงานสวน</h3>
+      <p>มอบหมายงาน แบ่งแปลงรับผิดชอบ ลูกน้องจดงานได้เองผ่านมือถือ</p>
+      <span class="feat-tag">จัดการทีม</span>
+    </div>
+  </div>
+</section>
+
+<!-- APP PREVIEW -->
+<section id="preview">
+  <div class="preview-inner">
+    <div class="preview-text reveal">
+      <div class="section-label">ตัวอย่างการใช้งาน</div>
+      <h2 class="section-title">ง่ายเหมือนจดโน้ตในมือถือ</h2>
+      <p class="section-sub">ออกแบบให้ใช้ได้กลางสวน แดดจ้า มือเปื้อนดิน ก็ยังกดได้สบาย</p>
+      <div class="preview-feature-list">
+        <div class="pf-item">
+          <div class="pf-ico" style="background:#E3F2FD">💧</div>
+          <div class="pf-text">
+            <strong>บันทึกงานรายวัน</strong>
+            <span>รดน้ำ ใส่ปุ๋ย ฉีดพ่นสาร กดเลือกแล้วบันทึกได้เลย</span>
+          </div>
+        </div>
+        <div class="pf-item">
+          <div class="pf-ico" style="background:#E8F5E9">🗺️</div>
+          <div class="pf-text">
+            <strong>จัดการแปลงและต้น</strong>
+            <span>เพิ่มแปลง ตั้งชื่อต้น กำหนดรอบปลูกได้</span>
+          </div>
+        </div>
+        <div class="pf-item">
+          <div class="pf-ico" style="background:#FFF3E0">✅</div>
+          <div class="pf-text">
+            <strong>งานที่ต้องทำวันนี้</strong>
+            <span>ระบบแจ้งเตือนงานค้างอัตโนมัติ ไม่ลืมแน่นอน</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="preview-phone reveal" style="transition-delay:.2s">
+      <div class="phone-mock">
+        <div class="phone-topbar">
+          <span class="phone-logo">🌿 สวนไม่ลืม</span>
+          <div class="phone-dot">คน</div>
+        </div>
+        <div style="background:#3A8F3F;border-radius:12px;padding:10px 12px;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+          <span style="width:8px;height:8px;background:#7CFC00;border-radius:50%;display:inline-block;flex-shrink:0"></span>
+          <span style="font-size:.7rem;color:#fff;font-weight:600;">แปลง สวนแตง</span>
+          <span style="font-size:.7rem;color:rgba(255,255,255,.7);margin-left:2px">🥒 แตงกวา</span>
+        </div>
+        <p class="phone-question">วันนี้ทำอะไรไปบ้าง?</p>
+        <div class="phone-grid">
+          <div class="phone-action">
+            <div class="pa-icon-wrap" style="background:#BBDEFB">💧</div>
+            <div class="pa-label">รดน้ำ</div>
+          </div>
+          <div class="phone-action">
+            <div class="pa-icon-wrap" style="background:#C8E6C9">🌿</div>
+            <div class="pa-label">ใส่ปุ๋ย</div>
+          </div>
+          <div class="phone-action">
+            <div class="pa-icon-wrap" style="background:#FFE0B2">🧪</div>
+            <div class="pa-label">ฉีดพ่นสาร</div>
+          </div>
+          <div class="phone-action">
+            <div class="pa-icon-wrap" style="background:#E8EAF6">✂️</div>
+            <div class="pa-label">ตัดแต่ง</div>
+          </div>
+        </div>
+        <div class="phone-nav">
+          <div class="pn-item active">📋<br>วันนี้</div>
+          <div class="pn-item">🌱<br>สวน</div>
+          <div class="pn-item">📦<br>คลัง</div>
+          <div class="pn-item">💵<br>การเงิน</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF -->
+<section id="proof">
+  <div class="proof-wrap">
+    <div class="reveal">
+      <span class="quote-big">"</span>
+      <blockquote>ก่อนหน้านี้จดใส่กระดาษ หายตลอด ตอนนี้ใช้สวนไม่ลืม สบายมาก ลูกค้าถาม scan QR ให้เลย เขาประทับใจมาก</blockquote>
+      <div class="author">
+        <div class="author-ava">👨‍🌾</div>
+        <div>
+          <strong class="author-name">คุณสมชาย ผลดี</strong>
+          <span class="author-detail">เกษตรกรทุเรียน · จ.จันทบุรี · ใช้งานมา 8 เดือน</span>
+        </div>
+      </div>
+    </div>
+    <div class="trust-list reveal" style="transition-delay:.2s">
+      <div class="trust-item">
+        <div class="trust-ico">🏆</div>
+        <div><span class="trust-title">QR Traceability ระดับสากล</span><span class="trust-desc">ตรวจสอบที่มาของผลผลิตได้ตลอดห่วงโซ่อาหาร</span></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-ico">🔒</div>
+        <div><span class="trust-title">ข้อมูลของคุณปลอดภัย</span><span class="trust-desc">เก็บบนคลาวด์ สำรองอัตโนมัติ ไม่มีหาย</span></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-ico">📡</div>
+        <div><span class="trust-title">ใช้งานได้แม้ไม่มีสัญญาณ</span><span class="trust-desc">PWA รองรับ Offline บันทึกก่อน sync ทีหลัง</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="how-head reveal">
+    <div class="section-label">เริ่มต้นง่ายมาก</div>
+    <h2 class="section-title">3 ขั้นตอน เริ่มได้เลย</h2>
+    <p class="section-sub">ไม่ต้องมีความรู้ด้านเทคโนโลยี ใช้เบอร์โทรสมัครได้ทันที</p>
+  </div>
+  <div class="steps-wrap">
+    <div class="steps-connector"></div>
+    <div class="steps-grid">
+      <div class="step reveal" style="transition-delay:.1s">
+        <div class="step-circle">📱</div>
+        <span class="step-badge">ขั้นตอนที่ 1</span>
+        <h3>สมัครฟรี ใช้เบอร์โทร</h3>
+        <p>ไม่ต้องใช้อีเมล ไม่ต้องจำรหัสผ่านยากๆ ใช้เบอร์มือถือก็เข้าได้เลย</p>
+      </div>
+      <div class="step reveal" style="transition-delay:.2s">
+        <div class="step-circle">🗺️</div>
+        <span class="step-badge">ขั้นตอนที่ 2</span>
+        <h3>เพิ่มแปลง เพิ่มต้นไม้</h3>
+        <p>ตั้งชื่อแปลง เพิ่มต้นไม้แต่ละต้น ติด QR Code ที่ต้นได้ทันที</p>
+      </div>
+      <div class="step reveal" style="transition-delay:.3s">
+        <div class="step-circle">✅</div>
+        <span class="step-badge">ขั้นตอนที่ 3</span>
+        <h3>จดงาน สแกน QR ดูย้อนหลัง</h3>
+        <p>บันทึกการดูแลรายวัน scan QR ดูประวัติ และสรุปรายงานได้ตลอดเวลา</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner">
+    <span class="cta-icon reveal">🌿</span>
+    <h2 class="cta-title reveal">พร้อมจัดการสวน<br><span>ให้เนี้ยบแล้วหรือยัง?</span></h2>
+    <p class="cta-sub reveal">เริ่มต้นวันนี้ ฟรีตลอดกาล ไม่มีค่าใช้จ่ายซ่อน<br>ใช้งานได้ทันทีจากมือถือ ไม่ต้องติดตั้งแอป</p>
+    <a href="#" class="btn-cta-big reveal">🌱 เปิดสวนใหม่ ฟรี!</a><br>
+    <div class="cta-note reveal"><span>ใช้งานได้ทันที · ไม่ต้องติดตั้ง (PWA) · รองรับทุกมือถือ</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-logo">🌿 สวนไม่ลืม</div>
+  <div class="f-copy">© 2025 สวนไม่ลืม · คนอาจลืม…แต่สวนไม่ลืม</div>
+</footer>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const io  = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold:.1, rootMargin:'0px 0px -40px 0px' });
+  els.forEach(el => io.observe(el));
+
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.padding = window.scrollY > 60 ? '10px 5vw' : '14px 5vw';
+  });
+</script>
+</body>
+</html>

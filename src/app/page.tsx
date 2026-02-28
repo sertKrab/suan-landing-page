@@ -1,319 +1,330 @@
-import styles from './page.module.css'
-import HeroV3 from '@/components/Hero'
-import { Screenshots } from '@/components/Screenshots'
+'use client'
 
+import { useEffect } from 'react'
+import Image from 'next/image'
+import styles from './page.module.css'
 
 export default function Home() {
+  useEffect(() => {
+    // Reveal on scroll
+    const els = document.querySelectorAll('.reveal')
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) e.target.classList.add('visible')
+        })
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    )
+    els.forEach((el) => io.observe(el))
+
+    // Nav shrink on scroll
+    const handleScroll = () => {
+      const nav = document.getElementById('navbar')
+      if (nav) {
+        nav.style.padding = window.scrollY > 60 ? '10px 5vw' : '14px 5vw'
+      }
+    }
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      io.disconnect()
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   return (
-    <main className={styles.main}>
-      {/* Hero Section V3 - Full Premium */}
-      <HeroV3 />
+    <>
+      {/* Floating Leaves */}
+      <div className={styles.leaf} style={{ left: '8%', fontSize: '24px', animationDuration: '14s', animationDelay: '0s' }}>🍃</div>
+      <div className={styles.leaf} style={{ left: '22%', fontSize: '18px', animationDuration: '18s', animationDelay: '4s' }}>🌿</div>
+      <div className={styles.leaf} style={{ left: '68%', fontSize: '20px', animationDuration: '16s', animationDelay: '8s' }}>🍃</div>
+      <div className={styles.leaf} style={{ left: '88%', fontSize: '16px', animationDuration: '20s', animationDelay: '2s' }}>🌿</div>
 
-      {/* Pain Points Section */}
-      <section id="pain" className={`section ${styles.painSection}`}>
-        <div className="container">
-          <h2 className="text-center">คุณเคยเป็นแบบนี้ไหม</h2>
-
-          <div className={styles.painGrid}>
-            <div className={styles.painCard}>
-              <span className={styles.painIcon}>❌</span>
-              <h3>ลืมว่ารดน้ำล่าสุดวันไหน</h3>
-              <p>จำแค่ &quot;เมื่อวาน&quot; แต่ว่าเมื่อวานวันไหน?</p>
-            </div>
-
-            <div className={styles.painCard}>
-              <span className={styles.painIcon}>💸</span>
-              <h3>ใส่ปุ๋ยไปเรื่อย ๆ แต่ไม่รู้หมดเงินเท่าไหร่</h3>
-              <p>สิ้นเดือนถึงรู้ว่า... ขาดทุน</p>
-            </div>
-
-            <div className={styles.painCard}>
-              <span className={styles.painIcon}>📊</span>
-              <h3>มีของวัด มีเซนเซอร์ แต่ดูไม่เป็น</h3>
-              <p>ตัวเลขเต็มไปหมด แต่ไม่รู้ว่าดีหรือแย่</p>
-            </div>
-
-            <div className={styles.painCard}>
-              <span className={styles.painIcon}>🤯</span>
-              <h3>ทำตามความเคยชิน ไม่รู้ว่าดีจริงไหม</h3>
-              <p>วันนี้รดมั้ย? เดาเอาไป!</p>
-            </div>
+      {/* ===== NAV ===== */}
+      <nav id="navbar" className={styles.nav}>
+        <div className={styles.navLogo}>
+          <div className={styles.navLogoIcon}>
+            <Image 
+              src="/logo.PNG" 
+              alt="Logo" 
+              width={28} 
+              height={28}
+              style={{ objectFit: 'contain' }}
+            />
           </div>
-
-          <p className={styles.painSummary}>
-            ทำสวนไม่ยาก<br />
-            แต่การจำทุกอย่างเอง…<strong>มันเหนื่อย</strong>
-          </p>
+          สวนไม่ลืม
         </div>
-      </section>
+        <a href="https://suan.nomem.app/quick-register" className={styles.navCta}>ใช้งานฟรี →</a>
+      </nav>
 
-      {/* Solution Section */}
-      <section className={`section ${styles.solutionSection}`}>
-        <div className="container">
-          <h2 className="text-center">เราช่วยจำแทนคุณ</h2>
-
-          <div className={styles.solutionGrid}>
-            <div className={styles.solutionCard}>
-              <span className={styles.checkIcon}>✔️</span>
-              <h3>จดงานในสวนแทน</h3>
-              <p>รดน้ำ ใส่ปุ๋ย เก็บเกี่ยว เราจำให้หมด</p>
-            </div>
-
-            <div className={styles.solutionCard}>
-              <span className={styles.checkIcon}>✔️</span>
-              <h3>บอกว่าวันนี้สวนเป็นยังไง</h3>
-              <p>เปิดดูแป๊บเดียว ก็รู้ว่าดินแห้งหรือชื้น</p>
-            </div>
-
-            <div className={styles.solutionCard}>
-              <span className={styles.checkIcon}>✔️</span>
-              <h3>รู้ว่าใช้เงินไปกับอะไรบ้าง</h3>
-              <p>ต้นทุนทุกบาท ดูได้ชัดเจน</p>
-            </div>
-
-            <div className={styles.solutionCard}>
-              <span className={styles.checkIcon}>✔️</span>
-              <h3>ดูย้อนหลังได้ ไม่ต้องเดา</h3>
-              <p>ข้อมูลทุกอย่างเก็บไว้ให้</p>
-            </div>
-          </div>
-
-          <p className={styles.solutionSummary}>
-            เปิดมือถือ ดูแป๊บเดียว ก็เข้าใจ
-          </p>
-        </div>
-      </section>
-
-      {/* Features Section - NEW VERSION */}
-      <section className="section">
-        <div className="container">
-          <h2 className="text-center" style={{ marginBottom: 'var(--space-xl)' }}>
-            ระบบช่วยเกษตรกรได้อย่างไร
-          </h2>
-          <div className={styles.featuresGrid}>
-            {/* Feature 1: Work Log */}
-            <div className={styles.featureCard}>
-              <div className={styles.featureIcon}>📝</div>
-              <h3>จดบันทึกงานสวนให้</h3>
-              <p className={styles.featureSubtitle}>
-                รดน้ำ ใส่ปุ๋ย ฉีดยา เก็บเกี่ยว
-              </p>
-              <ul className={styles.featureList}>
-                <li>💧 รดน้ำ - บันทึกครั้งละกี่ลิตร ใช้เวลานานแค่ไหน</li>
-                <li>🌱 ใส่ปุ๋ย - จำได้ว่าใส่สูตรไหน กี่กิโล</li>
-                <li>🧪 ฉีดยา - ติดตามว่าฉีดไปเมื่อไหร่ ปลอดภัยหรือยัง</li>
-                <li>🌾 เก็บเกี่ยว - รู้ปริมาณผลผลิตจริง</li>
-              </ul>
-            </div>
-
-            {/* Feature 2: Garden Management */}
-            <div className={styles.featureCard}>
-              <div className={styles.featureIcon}>🏡</div>
-              <h3>ดูสรุปสวนทุกแปลง</h3>
-              <p className={styles.featureSubtitle}>
-                ภาพรวมสวนในหนึ่งหน้าจอ
-              </p>
-              <ul className={styles.featureList}>
-                <li>🌿 ดูสถานะแปลง (กำลังปลูก/ว่าง)</li>
-                <li>📍 แยกตามพืชที่ปลูก</li>
-                <li>📊 ดูอายุพืช และวันเก็บเกี่ยว</li>
-                <li>🌤️ อุณหภูมิ-ความชื้น (ถ้ามี sensor)</li>
-              </ul>
-            </div>
-
-            {/* Feature 3: Finance */}
-            <div className={styles.featureCard}>
-              <div className={styles.featureIcon}>💰</div>
-              <h3>รู้ต้นทุนจริง</h3>
-              <p className={styles.featureSubtitle}>
-                ไม่ต้องเดา ดูได้ชัดเจน
-              </p>
-              <ul className={styles.featureList}>
-                <li>💸 รายจ่าย (ปุ๋ย, ยา, ค่าแรง)</li>
-                <li>💵 รายรับ (ขาย, กำไร)</li>
-                <li>📈 รายงานทางการเงิน</li>
-                <li>🧾 Export CSV ได้</li>
-              </ul>
-            </div>
-
-            {/* Feature 4: Inventory */}
-            <div className={styles.featureCard}>
-              <div className={styles.featureIcon}>📦</div>
-              <h3>ติดตามสต็อกปุ๋ย/ยา</h3>
-              <p className={styles.featureSubtitle}>
-                รู้ว่าเหลือเท่าไหร่ ซื้อเมื่อไหร่
-              </p>
-              <ul className={styles.featureList}>
-                <li>📋 คลังข้อมูลปุ๋ย/ยา</li>
-                <li>📊 สต็อกคงเหลือ (FIFO)</li>
-                <li>💳 ประวัติการซื้อ</li>
-                <li>⚠️ แจ้งเตือนของใกล้หมด</li>
-              </ul>
-            </div>
-
-            {/* Feature 5: Timeline */}
-            <div className={styles.featureCard}>
-              <div className={styles.featureIcon}>📅</div>
-              <h3>แจ้งเตือนงานที่ต้องทำ</h3>
-              <p className={styles.featureSubtitle}>
-                ไม่ต้องจำเอง ระบบบอกให้
-              </p>
-              <ul className={styles.featureList}>
-                <li>📌 งานวันนี้ต้องทำอะไร</li>
-                <li>🔔 แจ้งเตือนถึงเวลา</li>
-                <li>📝 Template แผนงาน (เช่น มะนาว 90 วัน)</li>
-                <li>✅ เช็คลิสต์ ทำแล้วหรือยัง</li>
-              </ul>
-            </div>
-
-            {/* Feature 6: Team */}
-            <div className={styles.featureCard}>
-              <div className={styles.featureIcon}>👥</div>
-              <h3>ทำงานร่วมกันทั้งทีม</h3>
-              <p className={styles.featureSubtitle}>
-                สวนใหญ่มีหลายคน ร่วมงานได้
-              </p>
-              <ul className={styles.featureList}>
-                <li>👤 เชิญสมาชิก (Invite Code)</li>
-                <li>👔 กำหนดบทบาท (Owner, Manager, Worker)</li>
-                <li>🔐 แยกสิทธิ์เข้าถึงแปลง</li>
-                <li>📊 ดูสรุปงานของทีม</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Screenshots Section */}
-      <Screenshots />
-
-      {/* How It Works - NEW VERSION */}
-      <section className={`section ${styles.howItWorksSection}`}>
-        <div className="container text-center">
-          <h2>ใช้งานยังไง (ง่ายมาก)</h2>
-
-          <div className={styles.stepsGrid}>
-            <div className={styles.step}>
-              <div className={styles.stepNumber}>1</div>
-              <div className={styles.stepIcon}>📱</div>
-              <h3>สมัครใช้งาน</h3>
-              <p>ใส่เบอร์โทร + OTP เสร็จ! ไม่ต้องกรอกเยอะ</p>
-            </div>
-
-            <div className={styles.step}>
-              <div className={styles.stepNumber}>2</div>
-              <div className={styles.stepIcon}>🏡</div>
-              <h3>สร้างแปลงสวนแรก</h3>
-              <p>บอกว่าปลูกอะไร กี่ไร่ เท่านั้น</p>
-            </div>
-
-            <div className={styles.step}>
-              <div className={styles.stepNumber}>3</div>
-              <div className={styles.stepIcon}>📝</div>
-              <h3>บันทึกงานแรก</h3>
-              <p>รดน้ำ ใส่ปุ๋ย หรืออะไรก็ได้ กดบันทึก 3 วินาที</p>
-            </div>
-
-            <div className={styles.step}>
-              <div className={styles.stepNumber}>4</div>
-              <div className={styles.stepIcon}>📊</div>
-              <h3>ดูสรุปและต้นทุน</h3>
-              <p>ระบบคำนวณต้นทุนให้อัตโนมัติ ดูได้ทันที</p>
-            </div>
-          </div>
-
-          <p className={styles.howItWorksSummary}>
-            จากเคยต้องจำทุกอย่างเอง<br />
-            <strong>ตอนนี้ระบบจำให้หมดแล้ว</strong>
-          </p>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section id="pricing" className={`section ${styles.pricingSection}`}>
-        <div className="container">
-          <h2 className="text-center">แพ็กเกจที่เหมาะกับทุกขนาดสวน</h2>
-
-          <div className={styles.pricingGrid}>
-            <div className={styles.pricingCard}>
-              <div className={styles.pricingIcon}>🌱</div>
-              <h3>ใช้ฟรี</h3>
-              <div className={styles.price}>ฟรี</div>
-              <ul>
-                <li>✅ จดสวน 1 แปลง</li>
-                <li>✅ ใช้งานพื้นฐาน</li>
-                <li>✅ ดูข้อมูลย้อนหลัง</li>
-              </ul>
-              <button className="btn btn-outline">เริ่มใช้เลย</button>
-            </div>
-
-            <div className={`${styles.pricingCard} ${styles.featured}`}>
-              <div className={styles.badge}>เร็ว ๆ นี้</div>
-              <div className={styles.pricingIcon}>🚜</div>
-              <h3>แบบเต็ม</h3>
-              <div className={styles.price}>เร็ว ๆ นี้</div>
-              <ul>
-                <li>✅ หลายแปลง ไม่จำกัด</li>
-                <li>✅ ดูข้อมูลละเอียดขึ้น</li>
-                <li>✅ ระบบช่วยวิเคราะห์</li>
-                <li>✅ Export ข้อมูล</li>
-              </ul>
-              <button className="btn btn-primary">แจ้งเตือนเมื่อเปิดตัว</button>
-            </div>
-          </div>
-
-          <p className={styles.pricingSummary}>
-            ลองใช้ฟรีก่อน ค่อยตัดสินใจ
-          </p>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section id="start" className={`section ${styles.ctaSection}`}>
-        <div className="container text-center">
-          <h2>ทำสวนให้สบายขึ้น</h2>
-          <p className={styles.ctaSubtitle}>
-            ไม่ต้องจำทุกอย่างเอง<br />
-            ให้ <strong>สวนไม่ลืม</strong> ช่วยคุณ
-          </p>
-
-          <div className={styles.ctaButtons}>
-            <button className="btn btn-primary btn-lg">
-              ✅ เริ่มใช้งานฟรี
-            </button>
-            <button className="btn btn-outline btn-lg">
-              📞 ติดต่อเรา (LINE)
-            </button>
-          </div>
-
-          <p className={styles.trustBadge}>
-            ✓ ไม่ต้องใส่บัตร  ✓ ใช้ได้ทันที  ✓ ยกเลิกได้ตลอด
-          </p>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className={styles.footer}>
-        <div className="container text-center">
-          <div className={styles.footerBrand}>
-            <h3 className={styles.brandName}>สวนไม่ลืม</h3>
-            <p className={styles.poweredBy}>
-              Powered by{' '}
-              <a
-                href="https://nomem.app"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                nomem.app
-              </a>
+      {/* ===== HERO ===== */}
+      <section id="hero" className={styles.hero}>
+        <div className={styles.heroBg}></div>
+        <div className={styles.heroContent}>
+          <div className={styles.heroGlass}>
+            <div className={styles.heroBadge}>🌾 ระบบจัดการสวนผลไม้ไทย · PWA</div>
+            <h1 className={styles.heroTitle}>
+              คนอาจลืม…<br />
+              <span className={styles.heroTitleAccent}>แต่สวนไม่ลืม</span>
+            </h1>
+            <p className={styles.heroSubtitle}>
+              จดงานสวนง่ายๆ ไม่ต้องจำ<br />
+              ปล่อยให้ระบบดูแลคุณ
             </p>
+            <div className={styles.heroBtns}>
+              <a href="https://suan.nomem.app/quick-register" className={styles.btnGreen}>🌱 เริ่มต้นใช้งานฟรี</a>
+              <a href="#features" className={styles.btnOutline}>ดูฟีเจอร์</a>
+            </div>
+            <div className={styles.heroPills}>
+              <div className={styles.appPill}>💧 รดน้ำ &nbsp;·&nbsp; 🌿 ใส่ปุ๋ย &nbsp;·&nbsp; 🧪 ฉีดพ่นสาร</div>
+              <div className={styles.appPill}>📱 ไม่ต้องติดตั้ง · ใช้ได้ทันที</div>
+            </div>
           </div>
+        </div>
+        <div className={styles.heroScroll}>
+          <div className={styles.scrollBar}></div>
+        </div>
+      </section>
 
-          <p className={styles.footerCopyright}>
-            © 2025 สวนไม่ลืม - Smart Agriculture System
+      {/* ===== PAIN ===== */}
+      <section id="pain" className={`section ${styles.painSection}`}>
+        <div className={`${styles.painHead} reveal`}>
+          <div className="section-label">ปัญหาที่เจอทุกวัน</div>
+          <h2 className="section-title">คุ้นๆ ไหมกับสิ่งเหล่านี้?</h2>
+          <p className="section-sub" style={{ margin: '0 auto' }}>
+            เกษตรกรทุกคนผ่านปัญหาเหล่านี้มาแล้ว เราสร้างสวนไม่ลืมเพื่อแก้ตรงนี้
           </p>
         </div>
+        <div className={styles.painGrid}>
+          <div className={`${styles.painCard} reveal`} style={{ transitionDelay: '.1s' }}>
+            <span className={styles.painIcon}>🌧️</span>
+            <h3>ลืมว่าใส่ปุ๋ยวันไหน</h3>
+            <p>จำไม่ได้ว่าใส่ปุ๋ยไปแล้วหรือยัง ต้องนับวันเอง กลัวใส่ซ้ำหรือข้ามรอบไป</p>
+          </div>
+          <div className={`${styles.painCard} reveal`} style={{ transitionDelay: '.2s' }}>
+            <span className={styles.painIcon}>📦</span>
+            <h3>สรุปยอดผลผลิตไม่ได้</h3>
+            <p>จดกระดาษไว้แต่หาย ไม่รู้ว่าปีนี้ได้กำไรเท่าไหร่ ขาดทุนตรงไหน</p>
+          </div>
+          <div className={`${styles.painCard} reveal`} style={{ transitionDelay: '.3s' }}>
+            <span className={styles.painIcon}>🤔</span>
+            <h3>ลูกค้าถามที่มา ตอบไม่ได้</h3>
+            <p>ผู้ซื้อรายใหญ่ถามว่าใช้สารอะไร เก็บเกี่ยวเมื่อไหร่ แต่ตอบไม่ได้เพราะไม่มีข้อมูล</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== FEATURES ===== */}
+      <section id="features" className={`section ${styles.featuresSection}`}>
+        <div className={`${styles.featHead} reveal`}>
+          <div className="section-label">ฟีเจอร์หลัก</div>
+          <h2 className="section-title">ครบ ในที่เดียว</h2>
+          <p className="section-sub" style={{ margin: '0 auto' }}>
+            ออกแบบมาสำหรับเกษตรกรไทย ใช้งานได้ทันทีจากมือถือ ไม่ต้องติดตั้ง
+          </p>
+        </div>
+        <div className={styles.featGrid}>
+          <div className={`${styles.featCard} reveal`} style={{ transitionDelay: '.1s' }}>
+            <div className={`${styles.featIcon} ${styles.featIconBlue}`}>📋</div>
+            <h3>Timeline ดูแลรายต้น</h3>
+            <p>บันทึกทุกขั้นตอนตั้งแต่ปลูกจนเก็บเกี่ยว ดูย้อนหลังได้ไม่จำกัด</p>
+            <span className={styles.featTag}>ติดตามรายต้น</span>
+          </div>
+          <div className={`${styles.featCard} reveal`} style={{ transitionDelay: '.2s' }}>
+            <div className={`${styles.featIcon} ${styles.featIconGreen}`}>📱</div>
+            <h3>QR Code ติดต้น</h3>
+            <p>สแกนปุ๊บ รู้ประวัติต้นไม้ปั๊บ เพิ่มความไว้วางใจให้ลูกค้าและผู้ซื้อ</p>
+            <span className={styles.featTag}>Traceability ระดับสากล</span>
+          </div>
+          <div className={`${styles.featCard} reveal`} style={{ transitionDelay: '.3s' }}>
+            <div className={`${styles.featIcon} ${styles.featIconOrange}`}>💰</div>
+            <h3>สรุปรายรับ-รายจ่าย</h3>
+            <p>รู้กำไรชัดเจน ไม่ต้องเดา ดูกราฟรายเดือน รายปีได้ทันที</p>
+            <span className={styles.featTag}>บัญชีสวน</span>
+          </div>
+          <div className={`${styles.featCard} reveal`} style={{ transitionDelay: '.4s' }}>
+            <div className={`${styles.featIcon} ${styles.featIconPurple}`}>👥</div>
+            <h3>ทีมงานสวน</h3>
+            <p>มอบหมายงาน แบ่งแปลงรับผิดชอบ ลูกน้องจดงานได้เองผ่านมือถือ</p>
+            <span className={styles.featTag}>จัดการทีม</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== APP PREVIEW ===== */}
+      <section id="preview" className={`section ${styles.previewSection}`}>
+        <div className={styles.previewInner}>
+          <div className={`${styles.previewText} reveal`}>
+            <div className="section-label">ตัวอย่างการใช้งาน</div>
+            <h2 className="section-title">ง่ายเหมือนจดโน้ตในมือถือ</h2>
+            <p className="section-sub">ออกแบบให้ใช้ได้กลางสวน แดดจ้า มือเปื้อนดิน ก็ยังกดได้สบาย</p>
+            <div className={styles.previewFeatureList}>
+              <div className={styles.pfItem}>
+                <div className={styles.pfIco} style={{ background: '#E3F2FD' }}>💧</div>
+                <div className={styles.pfText}>
+                  <strong>บันทึกงานรายวัน</strong>
+                  <span>รดน้ำ ใส่ปุ๋ย ฉีดพ่นสาร กดเลือกแล้วบันทึกได้เลย</span>
+                </div>
+              </div>
+              <div className={styles.pfItem}>
+                <div className={styles.pfIco} style={{ background: '#E8F5E9' }}>🗺️</div>
+                <div className={styles.pfText}>
+                  <strong>จัดการแปลงและต้น</strong>
+                  <span>เพิ่มแปลง ตั้งชื่อต้น กำหนดรอบปลูกได้</span>
+                </div>
+              </div>
+              <div className={styles.pfItem}>
+                <div className={styles.pfIco} style={{ background: '#FFF3E0' }}>✅</div>
+                <div className={styles.pfText}>
+                  <strong>งานที่ต้องทำวันนี้</strong>
+                  <span>ระบบแจ้งเตือนงานค้างอัตโนมัติ ไม่ลืมแน่นอน</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className={`${styles.previewPhone} reveal`} style={{ transitionDelay: '.2s' }}>
+            <div className={styles.phoneMock}>
+              <div className={styles.phoneTopbar}>
+                <span className={styles.phoneLogo}>🌿 สวนไม่ลืม</span>
+                <div className={styles.phoneDot}>คน</div>
+              </div>
+              <div className={styles.phoneStatus}>
+                <span className={styles.phoneStatusDot}></span>
+                <span className={styles.phoneStatusText}>แปลง สวนแตง</span>
+                <span className={styles.phoneStatusSub}>🥒 แตงกวา</span>
+              </div>
+              <p className={styles.phoneQuestion}>วันนี้ทำอะไรไปบ้าง?</p>
+              <div className={styles.phoneGrid}>
+                <div className={styles.phoneAction}>
+                  <div className={styles.paIconWrap} style={{ background: '#BBDEFB' }}>💧</div>
+                  <div className={styles.paLabel}>รดน้ำ</div>
+                </div>
+                <div className={styles.phoneAction}>
+                  <div className={styles.paIconWrap} style={{ background: '#C8E6C9' }}>🌿</div>
+                  <div className={styles.paLabel}>ใส่ปุ๋ย</div>
+                </div>
+                <div className={styles.phoneAction}>
+                  <div className={styles.paIconWrap} style={{ background: '#FFE0B2' }}>🧪</div>
+                  <div className={styles.paLabel}>ฉีดพ่นสาร</div>
+                </div>
+                <div className={styles.phoneAction}>
+                  <div className={styles.paIconWrap} style={{ background: '#E8EAF6' }}>✂️</div>
+                  <div className={styles.paLabel}>ตัดแต่ง</div>
+                </div>
+              </div>
+              <div className={styles.phoneNav}>
+                <div className={`${styles.pnItem} ${styles.pnItemActive}`}>📋<br />วันนี้</div>
+                <div className={styles.pnItem}>🌱<br />สวน</div>
+                <div className={styles.pnItem}>📦<br />คลัง</div>
+                <div className={styles.pnItem}>💵<br />การเงิน</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== PROOF / TESTIMONIAL ===== */}
+      <section id="proof" className={styles.proofSection}>
+        <div className={styles.proofWrap}>
+          <div className="reveal">
+            <span className={styles.quoteBig}>&ldquo;</span>
+            <p className={styles.proofQuote}>
+              ก่อนหน้านี้จดใส่กระดาษ หายตลอด ตอนนี้ใช้สวนไม่ลืม สบายมาก ลูกค้าถาม scan QR ให้เลย เขาประทับใจมาก
+            </p>
+            <div className={styles.author}>
+              <div className={styles.authorAva}>👨‍🌾</div>
+              <div>
+                <strong className={styles.authorName}>คุณสมชาย ผลดี</strong>
+                <span className={styles.authorDetail}>เกษตรกรทุเรียน · จ.จันทบุรี · ใช้งานมา 8 เดือน</span>
+              </div>
+            </div>
+          </div>
+          <div className={`${styles.trustList} reveal`} style={{ transitionDelay: '.2s' }}>
+            <div className={styles.trustItem}>
+              <div className={styles.trustIco}>🏆</div>
+              <div>
+                <span className={styles.trustTitle}>QR Traceability ระดับสากล</span>
+                <span className={styles.trustDesc}>ตรวจสอบที่มาของผลผลิตได้ตลอดห่วงโซ่อาหาร</span>
+              </div>
+            </div>
+            <div className={styles.trustItem}>
+              <div className={styles.trustIco}>🔒</div>
+              <div>
+                <span className={styles.trustTitle}>ข้อมูลของคุณปลอดภัย</span>
+                <span className={styles.trustDesc}>เก็บบนคลาวด์ สำรองอัตโนมัติ ไม่มีหาย</span>
+              </div>
+            </div>
+            <div className={styles.trustItem}>
+              <div className={styles.trustIco}>📡</div>
+              <div>
+                <span className={styles.trustTitle}>ใช้งานได้แม้ไม่มีสัญญาณ</span>
+                <span className={styles.trustDesc}>PWA รองรับ Offline บันทึกก่อน sync ทีหลัง</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== HOW IT WORKS ===== */}
+      <section id="how" className={`section ${styles.howSection}`}>
+        <div className={`${styles.howHead} reveal`}>
+          <div className="section-label">เริ่มต้นง่ายมาก</div>
+          <h2 className="section-title">3 ขั้นตอน เริ่มได้เลย</h2>
+          <p className="section-sub" style={{ margin: '0 auto' }}>
+            ไม่ต้องมีความรู้ด้านเทคโนโลยี ใช้เบอร์โทรสมัครได้ทันที
+          </p>
+        </div>
+        <div className={styles.stepsWrap}>
+          <div className={styles.stepsConnector}></div>
+          <div className={styles.stepsGrid}>
+            <div className={`${styles.step} reveal`} style={{ transitionDelay: '.1s' }}>
+              <div className={styles.stepCircle}>📱</div>
+              <span className={styles.stepBadge}>ขั้นตอนที่ 1</span>
+              <h3>สมัครฟรี ใช้เบอร์โทร</h3>
+              <p>ไม่ต้องใช้อีเมล ไม่ต้องจำรหัสผ่านยากๆ ใช้เบอร์มือถือก็เข้าได้เลย</p>
+            </div>
+            <div className={`${styles.step} reveal`} style={{ transitionDelay: '.2s' }}>
+              <div className={styles.stepCircle}>🗺️</div>
+              <span className={styles.stepBadge}>ขั้นตอนที่ 2</span>
+              <h3>เพิ่มแปลง เพิ่มต้นไม้</h3>
+              <p>ตั้งชื่อแปลง เพิ่มต้นไม้แต่ละต้น ติด QR Code ที่ต้นได้ทันที</p>
+            </div>
+            <div className={`${styles.step} reveal`} style={{ transitionDelay: '.3s' }}>
+              <div className={styles.stepCircle}>✅</div>
+              <span className={styles.stepBadge}>ขั้นตอนที่ 3</span>
+              <h3>จดงาน สแกน QR ดูย้อนหลัง</h3>
+              <p>บันทึกการดูแลรายวัน scan QR ดูประวัติ และสรุปรายงานได้ตลอดเวลา</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CTA ===== */}
+      <section id="cta" className={styles.ctaSection}>
+        <div className={styles.ctaInner}>
+          <span className={`${styles.ctaIcon} reveal`}>🌿</span>
+          <h2 className={`${styles.ctaTitle} reveal`}>
+            พร้อมจัดการสวน<br />
+            <span className={styles.ctaTitleAccent}>ให้เนี้ยบแล้วหรือยัง?</span>
+          </h2>
+          <p className={`${styles.ctaSub} reveal`}>
+            เริ่มต้นวันนี้ ฟรีตลอดกาล ไม่มีค่าใช้จ่ายซ่อน<br />
+            ใช้งานได้ทันทีจากมือถือ ไม่ต้องติดตั้งแอป
+          </p>
+          <a href="https://suan.nomem.app/quick-register" className={`${styles.btnCtaBig} reveal`}>🌱 เปิดสวนใหม่ ฟรี!</a>
+          <br />
+          <div className={`${styles.ctaNote} reveal`}>
+            <span className={styles.ctaNoteInner}>ใช้งานได้ทันที · ไม่ต้องติดตั้ง (PWA) · รองรับทุกมือถือ</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== FOOTER ===== */}
+      <footer className={styles.footer}>
+        <div className={styles.fLogo}>🌿 สวนไม่ลืม</div>
+        <div className={styles.fCopy}>© 2025 สวนไม่ลืม · คนอาจลืม…แต่สวนไม่ลืม</div>
       </footer>
-    </main>
+    </>
   )
 }
