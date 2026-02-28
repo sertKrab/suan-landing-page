@@ -55,7 +55,7 @@ export default function Home() {
           </div>
           สวนไม่ลืม
         </div>
-        <a href="https://suan.nomem.app/quick-register" className={styles.navCta}>ใช้งานฟรี →</a>
+        <a href="https://suan.nomem.app/mai.luem/quick-register" className={styles.navCta}>ใช้งานฟรี →</a>
       </nav>
 
       {/* ===== HERO ===== */}
@@ -73,7 +73,7 @@ export default function Home() {
               ปล่อยให้ระบบดูแลคุณ
             </p>
             <div className={styles.heroBtns}>
-              <a href="https://suan.nomem.app/quick-register" className={styles.btnGreen}>🌱 เริ่มต้นใช้งานฟรี</a>
+              <a href="https://suan.nomem.app/mai.luem/quick-register" className={styles.btnGreen}>🌱 เริ่มต้นใช้งานฟรี</a>
               <a href="#features" className={styles.btnOutline}>ดูฟีเจอร์</a>
             </div>
             <div className={styles.heroPills}>
