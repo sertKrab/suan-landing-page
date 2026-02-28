@@ -224,47 +224,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== PROOF / TESTIMONIAL ===== */}
-      <section id="proof" className={styles.proofSection}>
-        <div className={styles.proofWrap}>
-          <div className="reveal">
-            <span className={styles.quoteBig}>&ldquo;</span>
-            <p className={styles.proofQuote}>
-              ก่อนหน้านี้จดใส่กระดาษ หายตลอด ตอนนี้ใช้สวนไม่ลืม สบายมาก ลูกค้าถาม scan QR ให้เลย เขาประทับใจมาก
-            </p>
-            <div className={styles.author}>
-              <div className={styles.authorAva}>👨‍🌾</div>
-              <div>
-                <strong className={styles.authorName}>คุณสมชาย ผลดี</strong>
-                <span className={styles.authorDetail}>เกษตรกรทุเรียน · จ.จันทบุรี · ใช้งานมา 8 เดือน</span>
-              </div>
-            </div>
-          </div>
-          <div className={`${styles.trustList} reveal`} style={{ transitionDelay: '.2s' }}>
-            <div className={styles.trustItem}>
-              <div className={styles.trustIco}>🏆</div>
-              <div>
-                <span className={styles.trustTitle}>QR Traceability ระดับสากล</span>
-                <span className={styles.trustDesc}>ตรวจสอบที่มาของผลผลิตได้ตลอดห่วงโซ่อาหาร</span>
-              </div>
-            </div>
-            <div className={styles.trustItem}>
-              <div className={styles.trustIco}>🔒</div>
-              <div>
-                <span className={styles.trustTitle}>ข้อมูลของคุณปลอดภัย</span>
-                <span className={styles.trustDesc}>เก็บบนคลาวด์ สำรองอัตโนมัติ ไม่มีหาย</span>
-              </div>
-            </div>
-            <div className={styles.trustItem}>
-              <div className={styles.trustIco}>📡</div>
-              <div>
-                <span className={styles.trustTitle}>ใช้งานได้แม้ไม่มีสัญญาณ</span>
-                <span className={styles.trustDesc}>PWA รองรับ Offline บันทึกก่อน sync ทีหลัง</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ===== HOW IT WORKS ===== */}
       <section id="how" className={`section ${styles.howSection}`}>
@@ -309,10 +268,10 @@ export default function Home() {
             <span className={styles.ctaTitleAccent}>ให้เนี้ยบแล้วหรือยัง?</span>
           </h2>
           <p className={`${styles.ctaSub} reveal`}>
-            เริ่มต้นวันนี้ ฟรีตลอดกาล ไม่มีค่าใช้จ่ายซ่อน<br />
+            เริ่มต้นวันนี้ ไม่มีค่าใช้จ่ายซ่อน<br />
             ใช้งานได้ทันทีจากมือถือ ไม่ต้องติดตั้งแอป
           </p>
-          <a href="https://suan.nomem.app/quick-register" className={`${styles.btnCtaBig} reveal`}>🌱 เปิดสวนใหม่ ฟรี!</a>
+          <a href="https://suan.nomem.app/mai.luem/quick-register" className={`${styles.btnCtaBig} reveal`}>🌱 เปิดสวนใหม่ ฟรี!</a>
           <br />
           <div className={`${styles.ctaNote} reveal`}>
             <span className={styles.ctaNoteInner}>ใช้งานได้ทันที · ไม่ต้องติดตั้ง (PWA) · รองรับทุกมือถือ</span>
