@@ -231,7 +231,7 @@ export default function Home() {
           <div className="section-label">เริ่มต้นง่ายมาก</div>
           <h2 className="section-title">3 ขั้นตอน เริ่มได้เลย</h2>
           <p className="section-sub" style={{ margin: '0 auto' }}>
-            ไม่ต้องมีความรู้ด้านเทคโนโลยี ใช้เบอร์โทรสมัครได้ทันที
+            ไม่ต้องมีความรู้ด้านเทคโนโลยี ใช้อีเมลสมัครได้ทันที
           </p>
         </div>
         <div className={styles.stepsWrap}>
@@ -240,8 +240,8 @@ export default function Home() {
             <div className={`${styles.step} reveal`} style={{ transitionDelay: '.1s' }}>
               <div className={styles.stepCircle}>📱</div>
               <span className={styles.stepBadge}>ขั้นตอนที่ 1</span>
-              <h3>สมัครฟรี ใช้เบอร์โทร</h3>
-              <p>ไม่ต้องใช้อีเมล ไม่ต้องจำรหัสผ่านยากๆ ใช้เบอร์มือถือก็เข้าได้เลย</p>
+              <h3>สมัครฟรี </h3>
+              <p>ใช้อีเมลสมัครได้เลย</p>
             </div>
             <div className={`${styles.step} reveal`} style={{ transitionDelay: '.2s' }}>
               <div className={styles.stepCircle}>🗺️</div>
@@ -274,7 +274,7 @@ export default function Home() {
           <a href="https://suan.nomem.app/mai.luem/quick-register" className={`${styles.btnCtaBig} reveal`}>🌱 เปิดสวนใหม่ ฟรี!</a>
           <br />
           <div className={`${styles.ctaNote} reveal`}>
-            <span className={styles.ctaNoteInner}>ใช้งานได้ทันที · ไม่ต้องติดตั้ง (PWA) · รองรับทุกมือถือ</span>
+            <span className={styles.ctaNoteInner}>ใช้งานได้ทันที · ไม่ต้องติดตั้ง · รองรับทุกมือถือ</span>
           </div>
         </div>
       </section>
