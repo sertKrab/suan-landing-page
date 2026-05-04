@@ -1,40 +1,17 @@
-'use client'
-
-import { useEffect } from 'react'
 import Image from 'next/image'
 import styles from './page.module.css'
+import { ScrollAnimations } from '@/components/ScrollAnimations'
+import { FarmDirectory } from '@/components/FarmDirectory'
+import { ActivityFeed } from '@/components/ActivityFeed'
+import { TimelineTemplates } from '@/components/TimelineTemplates'
+import { getFarms, getFeed } from '@/services/publicApi'
 
-export default function Home() {
-  useEffect(() => {
-    // Reveal on scroll
-    const els = document.querySelectorAll('.reveal')
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) e.target.classList.add('visible')
-        })
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-    )
-    els.forEach((el) => io.observe(el))
-
-    // Nav shrink on scroll
-    const handleScroll = () => {
-      const nav = document.getElementById('navbar')
-      if (nav) {
-        nav.style.padding = window.scrollY > 60 ? '10px 5vw' : '14px 5vw'
-      }
-    }
-    window.addEventListener('scroll', handleScroll)
-
-    return () => {
-      io.disconnect()
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
+export default async function Home() {
+  const [farmsData, feed] = await Promise.all([getFarms(), getFeed(5)])
 
   return (
     <>
+      <ScrollAnimations />
       {/* Floating Leaves */}
       <div className={styles.leaf} style={{ left: '8%', fontSize: '24px', animationDuration: '14s', animationDelay: '0s' }}>🍃</div>
       <div className={styles.leaf} style={{ left: '22%', fontSize: '18px', animationDuration: '18s', animationDelay: '4s' }}>🌿</div>
@@ -86,6 +63,15 @@ export default function Home() {
           <div className={styles.scrollBar}></div>
         </div>
       </section>
+
+      {/* ===== FARM DIRECTORY ===== */}
+      <FarmDirectory farms={farmsData.farms} />
+
+      {/* ===== ACTIVITY FEED ===== */}
+      <ActivityFeed feed={feed} stats={farmsData.stats} />
+
+      {/* ===== TIMELINE TEMPLATES ===== */}
+      <TimelineTemplates />
 
       {/* ===== PAIN ===== */}
       <section id="pain" className={`section ${styles.painSection}`}>
